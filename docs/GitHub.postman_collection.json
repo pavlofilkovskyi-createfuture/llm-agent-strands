@@ -1,0 +1,415 @@
+{
+	"info": {
+		"name": "GitHub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mcp",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "users/list_tools",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "mcp-session-id",
+										"value": "{{mcp-session-id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$randomInt}},\n  \"method\": \"tools/list\",\n  \"params\": { }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.githubcopilot.com/mcp/x/users",
+									"protocol": "https",
+									"host": [
+										"api",
+										"githubcopilot",
+										"com"
+									],
+									"path": [
+										"mcp",
+										"x",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search_users",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "mcp-session-id",
+										"value": "{{mcp-session-id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\":\"2.0\",\n    \"id\":{{$randomInt}},\n    \"method\":\"tools/call\",\n    \"params\":{\n        \"name\":\"search_users\",\n        \"arguments\": {\n            \"query\": \"pavlofilkovskyi\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.githubcopilot.com/mcp/x/users",
+									"protocol": "https",
+									"host": [
+										"api",
+										"githubcopilot",
+										"com"
+									],
+									"path": [
+										"mcp",
+										"x",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "repos",
+					"item": [
+						{
+							"name": "repos/list_tools",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "mcp-session-id",
+										"value": "{{mcp-session-id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$randomInt}},\n  \"method\": \"tools/list\",\n  \"params\": { }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.githubcopilot.com/mcp/x/repos",
+									"protocol": "https",
+									"host": [
+										"api",
+										"githubcopilot",
+										"com"
+									],
+									"path": [
+										"mcp",
+										"x",
+										"repos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "prs",
+					"item": [
+						{
+							"name": "pull_requests/list_tools",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "mcp-session-id",
+										"value": "{{mcp-session-id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$randomInt}},\n  \"method\": \"tools/list\",\n  \"params\": { }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.githubcopilot.com/mcp/x/pull_requests",
+									"protocol": "https",
+									"host": [
+										"api",
+										"githubcopilot",
+										"com"
+									],
+									"path": [
+										"mcp",
+										"x",
+										"pull_requests"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "1. init",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Read the 'mcp-session-id' header from the response",
+									"const sessionId = pm.response.headers.get('mcp-session-id');",
+									"if (sessionId) {",
+									"    pm.collectionVariables.set('mcp-session-id', sessionId);",
+									"    pm.test('mcp-session-id header is present and set as collection variable', function () {",
+									"        pm.expect(sessionId).to.be.a('string').and.not.empty;",
+									"    });",
+									"} else {",
+									"    pm.test('mcp-session-id header is missing in the response', function () {",
+									"        pm.expect(sessionId).to.not.be.undefined;",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\":\"2.0\",\n    \"id\":1,\n    \"method\":\"initialize\",\n    \"params\":{\n        \"protocolVersion\":\"2025-06-18\",\n        \"capabilities\":{},\n        \"clientInfo\":{\n            \"name\":\"pavlofilkovskyi-createfuture\",\n            \"version\":\"0.1.0\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.githubcopilot.com/mcp",
+							"protocol": "https",
+							"host": [
+								"api",
+								"githubcopilot",
+								"com"
+							],
+							"path": [
+								"mcp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. get_me",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mcp-session-id",
+								"value": "{{mcp-session-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\":\"2.0\",\n    \"id\":{{$randomInt}},\n    \"params\":{\n        \"name\":\"get_me\"\n    },\n    \"method\":\"tools/call\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.githubcopilot.com/mcp",
+							"protocol": "https",
+							"host": [
+								"api",
+								"githubcopilot",
+								"com"
+							],
+							"path": [
+								"mcp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. list_tools",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mcp-session-id",
+								"value": "{{mcp-session-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$randomInt}},\n  \"method\": \"tools/list\",\n  \"params\": { }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.githubcopilot.com/mcp",
+							"protocol": "https",
+							"host": [
+								"api",
+								"githubcopilot",
+								"com"
+							],
+							"path": [
+								"mcp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_file_contents",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "mcp-session-id",
+								"value": "{{mcp-session-id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\":\"2.0\",\n    \"id\":{{$randomInt}},\n    \"method\":\"tools/call\",\n    \"params\":{\n        \"name\":\"get_file_contents\",\n        \"arguments\": {\n            \"owner\": \"filkovsp\",\n            \"repo\": \"WEB-Drawing-App\",\n            \"path\": \"/style.css\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.githubcopilot.com/mcp",
+							"protocol": "https",
+							"host": [
+								"api",
+								"githubcopilot",
+								"com"
+							],
+							"path": [
+								"mcp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{vault:github_api_key}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "mcp-session-id",
+			"value": ""
+		}
+	]
+}

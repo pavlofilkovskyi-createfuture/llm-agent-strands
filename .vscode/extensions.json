@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.vscodeintellicode-completions",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "ms-python.isort",
+        "ms-toolsai.jupyter",
+        "ms-python.black-formatter",
+        "KevinRose.vsc-python-indenticator"
+    ]
+}

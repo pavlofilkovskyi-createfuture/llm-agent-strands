@@ -1,0 +1,7 @@
+# General dependencies
+python-dotenv
+ipykernel
+
+# AWS Strands
+strands-agents
+strands-agents-tools
