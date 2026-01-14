@@ -48,32 +48,33 @@ Starting point: [strands-agents/samples](https://github.com/strands-agents/sampl
 ## How to pick model with permissions to use: 
 
 1. go to [AWS Console](https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1) \
-    in my case (Pavlo Filkovskyi) with SSO login i had to navigate to `AWS access portal` first: \
+    in my case (Pavlo Filkovskyi) with SSO login i have to navigate to `AWS access portal` first: \
     `https://<session>.awsapps.com/start/#/?tab=accounts`, \
     where `<session>` - is customer specific, usually customer's name. \
-    then i picked necessary account from the list appeared on the screen and clicked on it, \
-    it would uncollapsed into 2 links looking like: `<account role> | Access Keys` \
-    `<account role>` link took me to the console page
+    then i pick necessary account from the list appeared on the screen \
+    and click on it, and see 2 links looking like: `<account role> | Access Keys` \
+    `<account role>` link takes me to `the console` page, when i click on it
 2. At the console page use search bar at the top left, and search for `Amazon Bedrock`
 3. When found, open it and scroll slightly down, see the `Test` section, (Chat / Text playground)
-4. click `Open playground` and you'll see button on the top left of the chat - `Select Model`
-5. click `Select Model` and brows categories and models, seee which ones you have access to.
-6. pick one, click `Apply`
+4. Click `Open playground` and you'll see button on the top left of the chat - `Select Model`
+5. Click `Select Model` and brows categories and models, seee which ones you have access to.
+6. Pick one (in my case after several experiments i stopped at `OpenAI / gpt-oss-20b`), and click `Apply`
 7. in chat window, top left see `Configuration` section with the model name and (i) icon next to it - clic on it, then in a popup click `View Details`
 8. Model's details will open in a new tab, scroll a bit down to see `Model ID` - that's what you need!
 
 ## Troubleshooting in local env:
 
-If running `main.py` crashes with exception saying `Your AWS Token has expired`, 
-this might be caused by the fact that python venv somehow picks up variables it not supposed to pick: 
-`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`. 
-Even if just freshly updated from AWS Access Portal these local env vars appear not to be working as expected.
+If using SSO login with AWS, and `main.py` crashes with exception saying `Your AWS Token has expired`, 
+check if your Environment Variables contain these:
+`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`.
+If they present and python venv somehow picks them up, that might be an issue.
+Even if just freshly updated from AWS Access Portal these local env vars do not work properly with SSO.
 
 Workaround: 
 ```bash
 unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && unset AWS_SESSION_TOKEN
 ```
-Then make sure you have authenticated with SSO and rerun `main.py`
+Then make sure you have authenticated with SSO and then rerun `main.py`
 
 ## References:
 - https://github.com/strands-agents/sdk-python

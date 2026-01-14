@@ -1,0 +1,15 @@
+[project]
+name = "llm-agent-strands"
+version = "0.1.0"
+description = "Agent implementation with AWS Strands"
+readme = "README.md"
+requires-python = "==3.14.*"
+dependencies = [
+    "mcp[cli]==1.23.*",
+    "pydantic==2.12.*",
+    "loguru>=0.7.0",
+    "python-dotenv>=1.2.0",
+    "mcp_server_git==2025.12.*",
+    "strands-agents==1.19.*",
+    "strands-agents-tools==0.2.*",
+]

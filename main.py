@@ -14,6 +14,10 @@ and install recommended extensions for VS Code (see .vscode/extensions.json):
 
 # %% import necessary modules from strands library
 from strands.models import BedrockModel
+from strands import Agent
+
+from dotenv import load_dotenv
+load_dotenv()  # Loads from .env file
 
 # Bedrock model instance
 # https://strandsagents.com/latest/documentation/docs/user-guide/concepts/model-providers/amazon-bedrock/
@@ -27,7 +31,6 @@ bedrock_model = BedrockModel(
 # https://strandsagents.com/latest/documentation/docs/api-reference/tools/
 from strands_tools import calculator, current_time
 from strands import tool
-from strands import Agent
 
 @tool
 def letter_counter(word: str, letter: str) -> int:
@@ -41,8 +44,8 @@ def letter_counter(word: str, letter: str) -> int:
     return word.lower().count(letter.lower())
 
 agent = Agent(
+    model = bedrock_model,
     tools=[calculator, current_time, letter_counter],
-    model = bedrock_model
 )
 
 prompt = """
@@ -65,19 +68,17 @@ agent(prompt)
 import os
 from datetime import datetime
 from strands import Agent
-from wrapper import GitHubMCPClient
-
-from dotenv import load_dotenv
-load_dotenv()  # Loads from .env file
+from mcp_client import GitHubMCPClient
 
 GITHUB_ACCESS_TOKEN = os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN")
-github_mcp_client = GitHubMCPClient(access_token=GITHUB_ACCESS_TOKEN) # type: ignore None
+github_mcp_client = GitHubMCPClient(access_token=GITHUB_ACCESS_TOKEN) # type: ignore
 
 # https://strandsagents.com/latest/documentation/docs/user-guide/concepts/tools/mcp-tools
 with github_mcp_client:
     agent = Agent(
+        model = bedrock_model,
+        # tools = [github_mcp_client], # fails to start MCP client: the client session is currently running
         tools=github_mcp_client.list_tools_sync(),
-        model = bedrock_model
     )
     
     branch_name = f"test-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
@@ -104,5 +105,34 @@ with github_mcp_client:
     
     result = agent(prompt)
     print(result)
+
+# %% --------------------------------------------------------
+import os
+from strands import Agent
+from mcp_client import GitMCPClient, FilesystemMCPClient
+
+
+# https://strandsagents.com/latest/documentation/docs/user-guide/concepts/tools/mcp-tools
+with GitMCPClient() as git_mcp_client, \
+    FilesystemMCPClient() as filesystem_mcp_client:
+    
+    agent = Agent(
+        model = bedrock_model,
+        tools=[git_mcp_client.list_tools_sync()] + [filesystem_mcp_client.list_tools_sync()],
+    )
+    
+    prompt = """
+    You are a developer with access to MCP tools for Git and Filesystem.
+    Using these tools, perform the following tasks:
+    1. navigate to the repository at /Users/pfilkovskyi/Projects/test-repo,
+    2. find existing file in it named `hello.txt` with the content 'Hello!',
+    3. Modify the content of `hello.txt` to 'Hello, World!',
+       if the file does not exist, create it with the content 'Hello, World!',
+    4. commit changes with message 'update hello.txt'.
+    """
+    
+    result = agent(prompt)
+    print(result)
+
 
 # %%
